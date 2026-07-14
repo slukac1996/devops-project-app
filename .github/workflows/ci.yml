@@ -26,7 +26,7 @@ jobs:
            password: ${{ secrets.GITHUB_TOKEN }}
 
       -  name: Build image
-          run: |
+         run: |
               docker build \
                 -t ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:${{ github.sha }} \
                 -t ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:latest \
