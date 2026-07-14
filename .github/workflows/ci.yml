@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [api, worker,frontend]
+    steps:
+      -name: Checkout code
+       uses: actions/checkout@v4
+    
+      -name: Log into GitHub Container Registry
+       uses: docker/login-action@v3
+       with:
+         registry: ghcr.io
+         username: ${{ github.actor }}
+         password: ${{ secrets.GITHUB_TOKEN }}
+
+      -name: Build image
+       run: |
+        docker build \
+          -t ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:${{ github.sha }} \
+          -t ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:latest \
+          -f ${{ matrix.service }}/Containerfile ${{ matrix.service }}/
+
+      -name: Scan image with Trivy (report only)
+       uses: aquasecurity/trivy-action@master
+       with:
+         image-ref: ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:${{ github.sha }}
+         severity: HIGH,CRITICAL
+         exit-code: '0'
+         format: table
+
+      -name: Push image
+       run: |
+        docker push ghcr.io/${{ github.repository_owner }}/ticketing-${{ matrix.service }}:${{ github.sha }}
+        docker push ghcr.io/${{ github.repository_ower }}/ticketing-${{ matrix.service }}:latest
