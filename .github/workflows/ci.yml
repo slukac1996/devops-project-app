@@ -12,8 +12,8 @@ jobs:
   build-scan-push:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        service: [api, worker, frontend]
+        matrix:
+            service: [api, worker, frontend]
     steps:
        - name: Checkout code
          uses: actions/checkout@v4
