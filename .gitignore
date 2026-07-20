@@ -1,2 +1,6 @@
 .env
 ode_modules/
+*.tar
+*.deb
+minikube-linux-amd64
+order.json
