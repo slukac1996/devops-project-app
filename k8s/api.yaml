@@ -15,6 +15,7 @@ spec:
       labels:
         app: api
     spec:
+      serviceAccountName: ticketing-api
       containers:
       - image: localhost/ticketing-api:dev
         name: ticketing-api
