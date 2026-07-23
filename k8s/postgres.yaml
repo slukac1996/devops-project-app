@@ -37,6 +37,23 @@ spec:
           limits:
             memory: "1Gi"
             cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - ticketing_user
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          failureThreshold: 5
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - ticketing_user
+          initialDelaySeconds: 5
+          periodSeconds: 5
         envFrom:
         - configMapRef:
             name: app-config
