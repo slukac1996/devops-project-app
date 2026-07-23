@@ -7,8 +7,9 @@ podman run -d --network $NET --name postgres \
 	-e POSTGRES_PASSWORD=change_me_local \
 	-e POSTGRES_DB=ticketing \
 	-v ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:Z \
+	-v postgres-data:/var/lib/postgresql/data \
 	docker.io/library/postgres:16
-
+	
 podman run -d --network $NET --name redis \
 docker.io/library/redis:7
 
