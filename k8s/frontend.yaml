@@ -19,6 +19,13 @@ spec:
       - image: localhost/ticketing-frontend:dev
         name: ticketing-frontend
         imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
         envFrom:
         - configMapRef:
             name: app-config
